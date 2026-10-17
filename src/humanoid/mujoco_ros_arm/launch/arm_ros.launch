@@ -1,3 +1,0 @@
-<launch>
-  <node name="mujoco_ros_arm" pkg="mujoco_ros_arm" type="main.py" output="screen" cwd="$(find pkg mujoco_ros_arm)/scripts"/>
-</launch>

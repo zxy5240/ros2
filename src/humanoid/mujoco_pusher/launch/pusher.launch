@@ -1,0 +1,3 @@
+<launch>
+  <node name="mujoco_pusher" pkg="mujoco_pusher" type="main.py" output="screen" cwd="$(find pkg mujoco_pusher)/scripts"/>
+</launch>

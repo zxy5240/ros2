@@ -1,12 +1,10 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>mujoco_ros_arm</name>
+  <name>mujoco_pusher</name>
   <version>0.0.0</version>
-  <description>MuJoCo两自由度机械臂ROS话题控制</description>
+  <description>MuJoCo气动推杆推方块简单仿真</description>
   <maintainer email="todo@todo.todo">zxy5240</maintainer>
   <license>MIT</license>
-
   <buildtool_depend>catkin</buildtool_depend>
   <depend>rospy</depend>
-  <depend>std_msgs</depend>
 </package>
