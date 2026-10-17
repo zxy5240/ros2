@@ -48,6 +48,7 @@ ROS每章节运行代码:
 ## 2. 人形机器人 <span id='humanoid'></span>
 
 * [人形机器人基础](./humanoid/humanoid_basics.md)
+* [MuJoCo机械臂ROS话题控制](./humanoid/mujoco_ros_arm/index.md)
 
 ## 3. 肌肉骨骼人 <span id='musculoskeletal'></span>
 
