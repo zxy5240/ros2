@@ -175,6 +175,17 @@ process[sim_balance-2]: started with pid [2644]
 
 生成命令：`python3 tools/plot_curves.py`（需要 matplotlib，可选依赖）
 
+### 3.6 控制曲线
+
+![控制曲线](../img/balance_bot_curves.png)
+
+左图：同一工况（前进 0.30 m/s）下 PD 与 MLP 的倾角曲线 —— 两条线几乎重合
+（PD 最大 1.26°，MLP 最大 1.27°），说明"学生"确实学会了"老师"的行为。
+
+右图：PD 控制器在第 3 s 被 2 N·s 冲量推一下，倾角峰值 1.47°，**3.22 s 回正**。
+
+生成命令：`python3 tools/plot_curves.py`（需要 matplotlib，可选依赖）
+
 ## 4. 已知限制
 
 - 只做了平衡与速度跟踪，**没有做位置保持**（长时间站立会缓慢漂移）
