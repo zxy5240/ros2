@@ -6,14 +6,14 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link href="../../img/favicon.ico" rel="shortcut icon"/>
-<title>两轮自平衡机器人（LQR + 神经网络策略克隆） - 模拟器的 ROS 文档</title>
+<title>两轮自平衡机器人（倾角PD + 神经网络策略克隆） - 模拟器的 ROS 文档</title>
 <link href="../../css/theme.css" rel="stylesheet"/>
 <link href="../../css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
 <link href="../../extra.css" rel="stylesheet"/>
 <script>
         // Current page data
-        var mkdocs_page_name = "\u4e24\u8f6e\u81ea\u5e73\u8861\u673a\u5668\u4eba\uff08LQR + \u795e\u7ecf\u7f51\u7edc\u7b56\u7565\u514b\u9686\uff09";
+        var mkdocs_page_name = "\u4e24\u8f6e\u81ea\u5e73\u8861\u673a\u5668\u4eba\uff08\u503e\u89d2PD + \u795e\u7ecf\u7f51\u7edc\u7b56\u7565\u514b\u9686\uff09";
         var mkdocs_page_input_path = "ground/balance_bot.md";
         var mkdocs_page_url = null;
       </script>
@@ -174,7 +174,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../turtlebot3_auto_nav/">TurtleBot3 自主导航与避障参数优化</a>
 </li>
-<li class="toctree-l1 current"><a class="reference internal current" href="#">两轮自平衡机器人（LQR + 神经网络策略克隆）</a>
+<li class="toctree-l1 current"><a class="reference internal current" href="#">两轮自平衡机器人（倾角PD + 神经网络策略克隆）</a>
 <ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="#1">1. 本模块实际实现范围</a>
 </li>
@@ -364,7 +364,7 @@
 <ul class="wy-breadcrumbs">
 <li><a aria-label="Docs" class="icon icon-home" href="../.."></a></li>
 <li class="breadcrumb-item">地面载具</li>
-<li class="breadcrumb-item active">两轮自平衡机器人（LQR + 神经网络策略克隆）</li>
+<li class="breadcrumb-item active">两轮自平衡机器人（倾角PD + 神经网络策略克隆）</li>
 <li class="wy-breadcrumbs-aside">
 <a href="https://github.com/OpenHUTB/ros2/edit/master/docs/ground/balance_bot.md"> 编辑页面</a>
 </li>
@@ -419,11 +419,22 @@
 \mathbf{x} = [\,\theta,\ \dot\theta,\ v\,]^\top
 </script>
 </p>
-<p>在平衡点附近用 LQR 求增益 <script type="math/tex">K = R^{-1}B^\top P</script>，控制律为 <script type="math/tex">\tau = -K\mathbf{x}</script>。
-本模块先用工程上更好调的形式实现同一件事：</p>
+<div class="admonition warning">
+<p class="admonition-title">本模块用的是 PD，不是 LQR</p>
+<p>早期版本的导航和标题里写过"LQR"，但代码里<strong>没有求解 Riccati 方程、也没有增益矩阵 <script type="math/tex">K</script></strong>，
+三个增益是网格搜索手工调出来的（<code>kp=45, kd=2.0, kv=2.6</code>）。评审指出后已全部改成 PD 表述。
+PD 可以看成 LQR 的对角近似 —— 如果真要 LQR，需要用上式的 <script type="math/tex">A,B</script> 解</p>
 <p>
 <script type="math/tex; mode=display">
-\tau = -k_p\theta - k_d\dot\theta - k_v (v_{target}-v)
+A^\top P + PA - PBR^{-1}B^\top P + Q = 0
+</script>
+</p>
+<p>再取 <script type="math/tex">K = R^{-1}B^\top P</script>，控制律 <script type="math/tex">\tau = -K\mathbf{x}</script>。这一步本模块没做。</p>
+</div>
+<p>本模块实际使用的控制律：</p>
+<p>
+<script type="math/tex; mode=display">
+\tau = -k_p\theta - k_d\dot\theta - k_v (v_{target}-v) + k_\psi(\omega_{target}-\omega)
 </script>
 </p>
 <h3 id="22">2.2 速度项为什么是负号（调参踩的坑）</h3>
