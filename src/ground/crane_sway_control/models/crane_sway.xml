@@ -1,0 +1,88 @@
+<mujoco model="crane_sway">
+  <!--
+    行车（龙门吊）吊挂负载 —— 用来做"防摇"（anti-sway）。
+
+    结构只有两个自由度：
+        slide  小车沿导轨平移（移动副）
+        swing  吊杆绕小车下方摆动（铰链副）
+
+    为什么这个模型不会再出问题：
+        前两版我试过"差速车 + 高挂负载"，无论怎么调，加速时的反作用力矩
+        都会把车身掀翻（实测俯仰到 90°）。这里**没有轮子、没有地面接触**，
+        也就不存在翻车、打滑、接触求解失败这些坑 —— 系统只有 2 个自由度。
+
+    物理参数：
+        吊杆长 0.6 m ⇒ 单摆周期 T = 2π√(l/g) ≈ 1.55 s
+        小车 8 kg、负载 5 kg（负载是"重"的，防摇才有意义）
+
+    单位：米、弧度
+  -->
+
+  <compiler angle="radian" autolimits="true"/>
+  <option timestep="0.002" gravity="0 0 -9.81" integrator="implicitfast" iterations="50"/>
+
+  <visual>
+    <headlight diffuse="0.75 0.75 0.75" ambient="0.35 0.35 0.35" specular="0 0 0"/>
+    <global azimuth="-140" elevation="-12"/>
+  </visual>
+
+  <default>
+    <geom contype="0" conaffinity="0" friction="0.8 0.02 0.001"/>
+    <joint damping="0.02" armature="0.01"/>
+    <site rgba="0.9 0.2 0.2 1" size="0.01"/>
+  </default>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512"
+             rgb1="0.62 0.64 0.66" rgb2="0.74 0.76 0.78" markrgb="0.9 0.9 0.9" mark="cross"/>
+    <material name="floor_mat" texture="grid" texrepeat="24 24" reflectance="0.02"/>
+    <material name="rail_mat" rgba="0.30 0.32 0.36 1"/>
+    <material name="cart_mat" rgba="0.20 0.45 0.75 1"/>
+    <material name="load_mat" rgba="0.85 0.55 0.15 1"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 6" dir="0 0 -1" directional="true"/>
+    <light pos="-2 -3 4" dir="1 1 -1" directional="false" diffuse="0.3 0.3 0.3"/>
+
+    <!-- 地面只作视觉参考，不参与碰撞（这个模型不需要任何接触） -->
+    <geom name="floor" type="plane" size="0 0 0.05" material="floor_mat"
+          contype="0" conaffinity="0"/>
+
+    <!-- 导轨：静止的细长梁 -->
+    <geom name="rail" type="box" pos="0 0 1.30" size="1.60 0.04 0.03" material="rail_mat"/>
+
+    <camera name="chase" pos="-1.6 -2.2 1.5" mode="targetbody" target="cart" fovy="45"/>
+
+    <body name="cart" pos="0 0 1.24">
+      <joint name="slide_joint" type="slide" axis="1 0 0" range="-1.4 1.4"
+             damping="0.6" armature="0.05"/>
+      <geom name="cart_geom" type="box" size="0.075 0.06 0.045" material="cart_mat" mass="8.0"/>
+
+      <!-- 吊挂负载 -->
+      <body name="load" pos="0 0 -0.045">
+        <joint name="swing_joint" type="hinge" axis="0 1 0" damping="0.01"/>
+        <geom name="rod" type="capsule" pos="0 0 -0.28" size="0.010 0.28" material="rail_mat"
+              mass="0.5"/>
+        <geom name="ball" type="sphere" pos="0 0 -0.60" size="0.06" material="load_mat"
+              mass="5.0"/>
+        <site name="tip" pos="0 0 -0.60"/>
+      </body>
+
+      <site name="marker" pos="0 0 0"/>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <!-- 驱动小车：力矩（N），限幅让加速度现实一些 -->
+    <motor name="drive" joint="slide_joint" gear="1" ctrlrange="-120 120"/>
+  </actuator>
+
+  <sensor>
+    <jointpos name="cart_pos" joint="slide_joint"/>
+    <jointvel name="cart_vel" joint="slide_joint"/>
+    <jointpos name="swing_angle" joint="swing_joint"/>
+    <jointvel name="swing_rate" joint="swing_joint"/>
+    <framepos name="load_pos" objtype="site" objname="tip"/>
+  </sensor>
+</mujoco>

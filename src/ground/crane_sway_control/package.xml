@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>crane_sway_control</name>
+  <version>1.0.0</version>
+  <description>
+    ROS 1（Noetic）行车吊挂负载防摇：MuJoCo 里的导轨 + 小车 + 单摆，
+    用摆角反馈抑制搬运过程中的负载摆动。
+  </description>
+  <maintainer email="openhutb_course@example.com">OpenHUTB Student</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
+
+  <export/>
+</package>
