@@ -170,8 +170,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="robot_tasks/teleop_control/">任务1 - 键盘控制</a>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="robot_tasks/sensor_perception/">任务2 - 模拟传感器数据源</a>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="ground/pcl_recorder/">点云地图创建</a>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ground/turtlebot3_lidar_avoid/">TurtleBot3 激光雷达自主避障（ROS 2）</a>
@@ -190,11 +188,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ground/weather_perception_benchmark/">恶劣雨雾天气下多传感器感知性能对比实验</a>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ground/lateral_control_benchmark/">地面载具横向控制算法对比（纯跟踪/Stanley/LQR）</a>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="ground/turtlebot3_auto_nav/">TurtleBot3 自主导航与避障参数优化</a>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ground/diff_drive_odom_calib/">差速机器人里程计标定与神经网络滑移补偿</a>
+<li class="toctree-l1"><a class="reference internal" href="ground/balance_bot/">两轮自平衡机器人（倾角PD + 神经网络策略克隆）</a>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ground/cliff_brake/">悬崖边缘紧急制动仿真</a>
 </li>
@@ -207,8 +203,6 @@
 </ul>
 <p class="caption"><span class="caption-text">空域载具</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="air/mujoco_facade_capture/">MuJoCo无人机幕墙定距扫描</a>
-</li>
 <li class="toctree-l1"><a class="reference internal">无人机任务管理与安全状态机</a>
 <ul>
 <li class="toctree-l2"><a class="reference internal" href="air/uav_mission_safety_manager/overview/">模块概览</a>
@@ -288,8 +282,6 @@
 <li class="toctree-l2"><a class="reference internal" href="air/openhutb_yolo_mlp_control/yolo_trajectory_control/">YOLO 感知与八字轨迹控制</a>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="air/openhutb_yolo_mlp_control/yolo_visual_centering/">YOLO 目标水平视觉居中</a>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="air/openhutb_yolo_mlp_control/traffic_tracking/">Traffic Manager 车辆轨迹与 AirSim 跟随</a>
 </li>
 </ul>
 </li>
@@ -383,7 +375,6 @@
 <li><a href="#ground_vehicle">地面载具</a></li>
 <li><a href="no_fly_zone_check/">禁飞区检测模块</a></li>
 <li><a href="#air_vehicle">空域载具</a></li>
-<li><a href="air/mujoco_facade_capture/">MuJoCo无人机幕墙定距扫描</a></li>
 <li><a href="#water_vehicle">水域载具</a></li>
 </ul>
 <hr/>
@@ -472,9 +463,6 @@
 <p><a href="robot_tasks/teleop_control/">任务1：机器人键盘控制模块</a></p>
 </li>
 <li>
-<p><a href="robot_tasks/sensor_perception/">任务2: 模拟传感器数据源</a></p>
-</li>
-<li>
 <p><a href="ground/turtlebot3_lidar_avoid/">TurtleBot3 激光雷达自主避障（ROS 2）</a> —— 订阅机载激光雷达，按扇区提取前/左/右最近距离，经三态状态机与势场法决策后发布 /cmd_vel，实现迷宫场景自主避障</p>
 </li>
 <li>
@@ -485,7 +473,6 @@
 <li><a href="ground/car_2d_target_tracker/">2D 小车目标追踪仿真</a></li>
 <li><a href="ground/carla_nn_car_following/">基于神经网络的无人小车自适应跟车（ACC）</a></li>
 <li><a href="ground/weather_perception_benchmark/">恶劣雨雾天气下多传感器感知性能对比实验</a></li>
-<li><a href="ground/lateral_control_benchmark/">地面载具横向控制算法对比（纯跟踪 / Stanley / LQR）</a> —— 同一车辆模型与指标下定量比较三种横向控制器</li>
 <li><a href="ground/turtlebot3_auto_nav/">TurtleBot3 仿真自主导航与避障参数优化</a></li>
 <li><a href="ground/image_recorder/">图像录制 ROS 2 封装模块</a></li>
 <li><a href="ground/cliff_brake/">悬崖边缘紧急制动仿真</a> —— 用 MuJoCo 物理引擎与 ROS 三节点闭环实现车头测距触发的滞回紧急制动，附安全包络定量测试与坠落对照</li>
@@ -495,7 +482,7 @@
 <p><a href="ground/trajectory_accuracy_eval/">轨迹/里程计精度评估（ATE/RPE）</a></p>
 </li>
 <li>
-<p><a href="ground/diff_drive_odom_calib/">差速机器人里程计标定与神经网络滑移补偿（ROS 1 + MuJoCo）</a> —— MuJoCo 物理仿真下的 catkin 包；两个解耦实验辨识路程/轮距系数，再用 MLP 学转向滑移的非线性补偿，方形路径终点误差 2.91 m → 1.94 m → 0.79~1.34 m</p>
+<p><a href="ground/balance_bot/">两轮自平衡机器人（倾角PD + 神经网络策略克隆）</a> —— MuJoCo 两轮倒立摆，倾角 PD 站稳（20 s 最大倾角 0.96°），被推 2 N·s 后 3.22 s 回正，并用 MLP 克隆控制律</p>
 </li>
 </ul>
 <h2 id="5">5. 空域载具 <span id="air_vehicle"></span></h2>
@@ -576,7 +563,7 @@
 <p><a href="ap_cpp_overfomo/">AP-CPP 主动感知覆盖路径规划</a> —— 基于 AirSim 的无人机主动感知覆盖路径规划，在 OverFOMO 自适应覆盖规划的基础上进一步决定「该去哪里看」</p>
 </li>
 <li>
-<p><a href="air/openhutb_yolo_mlp_control/">YOLO 感知与无人机控制</a></p>
+<p><a href="air/openhutb_yolo_mlp_control/">YOLO目标检测与八字轨迹控制</a></p>
 </li>
 <li>
 <p><a href="air/uav_semantic_mapping_nav/">语义分割建图与语义路径规划</a></p>
